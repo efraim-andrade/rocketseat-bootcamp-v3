@@ -6,7 +6,7 @@ module.exports = {
   database: 'gonodemodulo2',
   operatorAliases: false,
   define: {
-    timestamps: false,
+    timestamps: true,
     underscored: true,
     underscoredAll: true
   }
