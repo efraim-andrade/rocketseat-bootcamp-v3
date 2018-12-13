@@ -8,18 +8,21 @@ const UserController = require('./app/controllers/UserController')
 const SessionController = require('./app/controllers/SessionController')
 
 const authMiddleware = require('./app/middlewares/auth')
+const guestMiddleware = require('./app/middlewares/guest')
 
-routes.get('/', SessionController.create)
+routes.get('/', guestMiddleware, SessionController.create)
 routes.post('/signin', SessionController.store)
 
-routes.get('/signup', UserController.create)
+routes.get('/signup', guestMiddleware, UserController.create)
 routes.post('/signup', upload.single('avatar'), UserController.store)
 
 routes.get('/app', authMiddleware)
 
+routes.get('/app/logout', SessionController.destroy)
+
 routes.get('/app/dashboard', (req, res) => {
   console.log(req.session.user)
-  return res.render('dashboard')
+  return res.render('dashboard', { user: req.session.user })
 })
 
 module.exports = routes

@@ -18,12 +18,19 @@ class SessionController {
     if (!await user.checkPassword(password)) {
       console.log('senha incorreta')
 
-      return res.redirect('/')
+      return res.redirect('/d')
     }
 
     req.session.user = user
 
     return res.redirect('/app/dashboard')
+  }
+
+  destroy (req, res) {
+    req.session.destroy(() => {
+      res.clearCookie('root')
+      return res.redirect('/')
+    })
   }
 }
 
