@@ -1,4 +1,5 @@
 const { User, Appointment } = require('../models')
+const { Op } = require('sequelize')
 const moment = require('moment')
 
 moment.locale('pt-br')
@@ -6,9 +7,16 @@ moment.locale('pt-br')
 class SchedulesController {
   async index (req, res) {
     const provider = await User.findByPk(req.params.provider)
-    var unformatedSchedules = await Appointment.findAll({
+
+    const unformatedSchedules = await Appointment.findAll({
       where: {
-        provider_id: provider.id
+        provider_id: provider.id,
+        date: {
+          [Op.between]: [
+            moment().startOf('day').format(),
+            moment().endOf('day').format()
+          ]
+        }
       }
     })
 
