@@ -21,7 +21,7 @@ class SchedulesController {
     })
 
     const schedules = unformatedSchedules.map(schedule => {
-      return moment(schedule.date).format('lll')
+      return moment(schedule.date).calendar()
     })
 
     return res.render('schedules/index', { provider, schedules })
