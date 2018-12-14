@@ -20,6 +20,12 @@ class AppointmentsController {
 
     res.redirect('/app/dashboard')
   }
+
+  async listing (req, res) {
+    const provider = await User.findByPk(req.params.provider)
+
+    return res.render('appointments/listing', { provider })
+  }
 }
 
 module.exports = new AppointmentsController()

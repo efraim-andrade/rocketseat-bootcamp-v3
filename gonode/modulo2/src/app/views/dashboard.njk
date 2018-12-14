@@ -10,12 +10,18 @@
       {% for provider in providers %}
         <li class="provider">
           <div>
-            <img src="/files/{{ provider.avatar }}" />
+            <img class="avatar" src="/files/{{ provider.avatar }}" />
 
             <strong>{{ provider.name }}</strong>
           </div>
 
-          <a href="/app/appointments/new/{{ provider.id }}">+</a>
+          <div class="actions">
+            <a href="/app/appointments/new/{{ provider.id }}">+</a>
+
+            <a href="/app/appointments/listing/{{ provider.id }}">
+              <img class="icon" src="/images/calendar.svg" alt="">
+            </a>
+          </div>
         </li>
       {% endfor %}
     </ul>

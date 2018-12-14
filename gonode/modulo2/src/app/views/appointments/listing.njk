@@ -1,0 +1,32 @@
+{% extends "_layouts/default.njk" %}
+
+{% block body %}
+  <div class="content">
+    <strong>Listagem de agendamentos</strong>
+
+    <div class="provider">
+      <div>
+        <img class="avatar" src="/files/{{ provider.avatar }}" />
+
+        <strong>{{ provider.name }}</strong>
+      </div>
+    </div>
+
+    <div id="hours"></div>
+
+    <a class="button" href="/app/dashboard">Voltar</a>
+  </div>
+
+  <script text="text/javascript">
+    function getSchedules() {
+      fetch(`/app/schedules/{{ provider.id }}`)
+        .then(function(response) {
+          response.text().then(function(html) {
+            document.getElementById('hours').innerHTML = html
+          })
+        })
+    }
+
+    window.onload(getSchedules())
+  </script>
+{% endblock %}
