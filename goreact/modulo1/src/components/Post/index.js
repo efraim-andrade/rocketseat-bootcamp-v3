@@ -1,16 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import Header from './Header';
 
-const Post = () => (
+const Post = ({
+  avatar, name, text, time,
+}) => (
   <Container>
-    <Header />
+    <Header avatar={avatar} name={name} time={time} />
+
+    <Text>{ text }</Text>
   </Container>
 );
 
+Post.defaultProps = {
+  avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNYjU6pmBARJ191GCVK0UncdRoj_zVSJ4ZjLkRuSoDICKTfWxA',
+};
+
+Post.propTypes = {
+  avatar: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+};
+
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
+
   width: 55vw;
   padding: 20px;
   border-radius: 6px;
@@ -20,14 +37,14 @@ const Container = styled.div`
   background-color: #e9e9e9;
 `;
 
-const Text = styled.h1`
-  text-align: center;
-  line-height: 40px;
+const Text = styled.p`
+  margin-top: 15px;
 
-  color: #666;
-  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+  text-align: left;
+  font-size: 12px;
   font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
 `;
 
 export default Post;

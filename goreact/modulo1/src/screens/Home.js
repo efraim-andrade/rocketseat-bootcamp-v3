@@ -13,10 +13,9 @@ class Home extends React.Component {
         text: 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet',
       },
       {
-        avatar: 'https://i.imgur.com/IwDMTYd.jpg',
-        name: 'Suicide Girl',
-        time: '3 min',
-        text: 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet',
+        name: 'Anonymous Guy',
+        time: '5 min',
+        text: 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet',
       },
     ],
   }
@@ -33,8 +32,8 @@ class Home extends React.Component {
             <Post
               avatar={item.avatar}
               name={item.name}
-              time={item.time}
               text={item.text}
+              time={item.time}
             />
           ))
         }

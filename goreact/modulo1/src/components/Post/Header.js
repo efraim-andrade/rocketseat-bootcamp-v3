@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Post = () => (
+const Post = ({ avatar, name, time }) => (
   <Container>
-    <Avatar src="https://i.imgur.com/IwDMTYd.jpg" />
+    <Avatar src={avatar} />
 
     <Wrap>
-      <Text>Suicide Girl</Text>
+      <Text>{name}</Text>
 
-      <Time>3 min</Time>
+      <Time>{time}</Time>
     </Wrap>
   </Container>
 );
@@ -22,7 +22,7 @@ const Container = styled.div`
 `;
 
 const Avatar = styled.img`
-  width: 50px;
+  width: 70px;
   height: 50px;
   border-radius: 100%;
 
