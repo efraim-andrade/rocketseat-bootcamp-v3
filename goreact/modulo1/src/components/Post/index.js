@@ -12,7 +12,7 @@ const Post = () => (
 const Container = styled.div`
   display: flex;
   width: 55vw;
-  padding: 10px;
+  padding: 20px;
   border-radius: 6px;
   margin: 25px auto 0;
   box-shadow: 0 0 10px #e9e9e9;

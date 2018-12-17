@@ -5,6 +5,12 @@ import Home from './screens/Home';
 
 import './styles/main.scss';
 
-const App = () => <Home />;
+class App extends React.Component {
+  state = {}
+
+  render() {
+    return <Home />;
+  }
+}
 
 render(<App />, document.getElementById('app'));
