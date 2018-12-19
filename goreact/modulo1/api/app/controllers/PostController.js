@@ -6,6 +6,12 @@ class PostController {
 
     return res.json(posts);
   }
+
+  async store(req, res) {
+    Post.create(req.body);
+
+    return res.json(Post);
+  }
 }
 
 module.exports = new PostController();

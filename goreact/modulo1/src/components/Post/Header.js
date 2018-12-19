@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Post = ({ avatar, name, time }) => (
@@ -12,6 +13,13 @@ const Post = ({ avatar, name, time }) => (
     </Wrap>
   </Container>
 );
+
+Post.propTypes = {
+  avatar: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  time: PropTypes.number.isRequired,
+};
+
 
 const Container = styled.div`
   display: flex;
