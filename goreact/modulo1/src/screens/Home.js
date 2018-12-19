@@ -1,23 +1,20 @@
 import React from 'react';
+import axios from 'axios';
+
+import api from '../services/api';
 
 import Header from '../components/Header';
 import Post from '../components/Post';
 
 class Home extends React.Component {
   state = {
-    posts: [
-      {
-        avatar: 'https://i.imgur.com/IwDMTYd.jpg',
-        name: 'Suicide Girl',
-        time: '3 min',
-        text: 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet',
-      },
-      {
-        name: 'Anonymous Guy',
-        time: '5 min',
-        text: 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet',
-      },
-    ],
+    posts: [],
+  }
+
+  componentDidMount() {
+    fetch(`http://${api.base}/posts`)
+      .then(posts => posts.json())
+      .then(posts => this.setState({ posts }));
   }
 
   render() {

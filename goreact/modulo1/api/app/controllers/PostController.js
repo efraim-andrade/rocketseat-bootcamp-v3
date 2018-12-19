@@ -8,9 +8,9 @@ class PostController {
   }
 
   async store(req, res) {
-    Post.create(req.body);
+    const post = await Post.create(req.body);
 
-    return res.json(Post);
+    return res.json(post);
   }
 }
 
