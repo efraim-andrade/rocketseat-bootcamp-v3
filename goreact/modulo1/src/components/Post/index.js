@@ -21,7 +21,7 @@ Post.defaultProps = {
 Post.propTypes = {
   avatar: PropTypes.string,
   name: PropTypes.string.isRequired,
-  time: PropTypes.number.isRequired,
+  time: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
 };
 

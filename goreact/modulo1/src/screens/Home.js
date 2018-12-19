@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import api from '../services/api';
 
@@ -30,7 +29,7 @@ class Home extends React.Component {
               avatar={item.avatar}
               name={item.name}
               text={item.text}
-              time={item.time}
+              time={item.createdAt}
             />
           ))
         }

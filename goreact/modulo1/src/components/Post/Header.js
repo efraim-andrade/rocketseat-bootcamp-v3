@@ -1,6 +1,9 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+const convertDate = time => moment(time).startOf('hour').fromNow();
 
 const Post = ({ avatar, name, time }) => (
   <Container>
@@ -9,7 +12,7 @@ const Post = ({ avatar, name, time }) => (
     <Wrap>
       <Text>{name}</Text>
 
-      <Time>{time}</Time>
+      <Time>{convertDate(time)}</Time>
     </Wrap>
   </Container>
 );
@@ -17,7 +20,7 @@ const Post = ({ avatar, name, time }) => (
 Post.propTypes = {
   avatar: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  time: PropTypes.number.isRequired,
+  time: PropTypes.string.isRequired,
 };
 
 
