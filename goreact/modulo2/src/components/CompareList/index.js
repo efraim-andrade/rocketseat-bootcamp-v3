@@ -1,42 +1,89 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
-const CompareList = ({ repositories }) => (
-  <Container>
-    {
-    repositories.map(repository => (
-      <Repository key={repository.id}>
-        <header>
-          <img src={repository.owner.avatar_url} alt="Avatar" />
+import api from '../../services/api';
 
-          <strong>{repository.name}</strong>
-          <small>{repository.owner.login}</small>
-        </header>
+class CompareList extends React.Component {
+  state = {
+    sync: false,
+  }
 
-        <ul>
-          <li>
-            {repository.stargazers_count} <small>stars</small>
-          </li>
+  handleUpdateRepository = async (repo, repos) => {
+    this.setState({ sync: true });
 
-          <li>
-            {repository.forks_count}  <small>forks</small>
-          </li>
+    try {
+      const { data: repository } = await api.get(`/repos/${repo.owner.login}/${repo.name}`);
 
-          <li>
-            {repository.open_issues_count}  <small>issues</small>
-          </li>
+      repository.lastCommit = moment(repository.pushed_at).fromNow();
 
-          <li>
-            {repository.lastCommit}  <small>last commit</small>
-          </li>
-        </ul>
-      </Repository>
-    ))
+      const updatedRepos = await repos
+        .filter(item => item.id !== repo.id);
+
+      updatedRepos.push(repository);
+
+      this.props.updateRepos(updatedRepos);
+    } catch (error) {
+      console.log('error: ', error);
+    } finally {
+      this.setState({ sync: false });
     }
-  </Container>
-);
+  }
+
+  render() {
+    const { repositories, removeRepo } = this.props;
+
+    return (
+      <Container>
+        {
+        repositories.map(repository => (
+          <Repository key={repository.id}>
+            <Close
+              className="fa fa-times"
+              onClick={() => removeRepo(repository.id)}
+            />
+
+            <header>
+              <img src={repository.owner.avatar_url} alt="Avatar" />
+
+              <strong>{repository.name}</strong>
+
+              <small>{repository.owner.login}</small>
+
+              <button
+                type="button"
+                onClick={() => this.handleUpdateRepository(repository, repositories)}
+                className={
+                  this.state.sync ? 'fa fa-refresh fa-spin' : 'fa fa-refresh'
+                }
+              />
+            </header>
+
+            <ul>
+              <li>
+                {repository.stargazers_count} <small>stars</small>
+              </li>
+
+              <li>
+                {repository.forks_count}  <small>forks</small>
+              </li>
+
+              <li>
+                {repository.open_issues_count}  <small>issues</small>
+              </li>
+
+              <li>
+                {repository.lastCommit}  <small>last commit</small>
+              </li>
+            </ul>
+          </Repository>
+        ))
+        }
+      </Container>
+    );
+  }
+}
 
 CompareList.propTypes = {
   repositories: PropTypes.arrayOf(PropTypes.shape({
@@ -51,6 +98,8 @@ CompareList.propTypes = {
     open_issues_count: PropTypes.number,
     lastCommit: PropTypes.string,
   })).isRequired,
+  removeRepo: PropTypes.func.isRequired,
+  updateRepos: PropTypes.func.isRequired,
 };
 
 const Container = styled.div`
@@ -62,6 +111,8 @@ const Container = styled.div`
     `;
 
 const Repository = styled.div`
+    position: relative;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -92,6 +143,21 @@ const Repository = styled.div`
         color: #666;
         font-size: 14px;
       }
+
+      button {
+        margin-top: 5px;
+        border: none;
+
+        color: #9b65e6;
+        transition: .3s;
+        cursor: pointer;
+        background: transparent;
+
+        &:hover {
+          color: #aa95e6;
+          transition: .3s;
+        }
+      }
     }
 
     ul {
@@ -113,6 +179,21 @@ const Repository = styled.div`
       }
     }
 
+    `;
+
+const Close = styled.a`
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    color: #9b65e6;
+    cursor: pointer;
+    transition: .3s;
+
+    &:hover {
+      color: #aa95e6;
+      transition: .3s;
+    }
     `;
 
 export default CompareList;

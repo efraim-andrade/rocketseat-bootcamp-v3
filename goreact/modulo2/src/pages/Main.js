@@ -16,6 +16,12 @@ class Main extends React.Component {
     repositories: [],
   }
 
+  componentDidMount() {
+    const repositories = JSON.parse(localStorage.getItem('repositories'));
+
+    this.setState({ repositories });
+  }
+
   handleAddRepository = async (e) => {
     e.preventDefault();
     const { repositoryInput, repositories } = this.state;
@@ -32,11 +38,27 @@ class Main extends React.Component {
         repositoryError: false,
         repositories: [...repositories, repository],
       });
+
+      localStorage.setItem('repositories', JSON.stringify(this.state.repositories));
     } catch (err) {
       this.setState({ repositoryError: true });
     } finally {
       this.setState({ loading: false });
     }
+  }
+
+  removeRepo = async (item) => {
+    const repositories = await this.state.repositories
+      .filter(repo => repo.id !== item);
+
+    this.setState({ repositories });
+    localStorage.setItem('repositories', JSON.stringify(this.state.repositories));
+  }
+
+  updateRepos = (updatedRepos) => {
+    this.setState({ repositories: updatedRepos });
+
+    localStorage.setItem('repositories', JSON.stringify(updatedRepos));
   }
 
   render() {
@@ -67,7 +89,11 @@ class Main extends React.Component {
           </button>
         </Form>
 
-        <CompareList repositories={repositories} />
+        <CompareList
+          repositories={repositories}
+          removeRepo={this.removeRepo}
+          updateRepos={this.updateRepos}
+        />
       </Container>
     );
   }
@@ -78,7 +104,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 60px;
-  `;
+`;
 
 const Form = styled.form`
   display: flex;
@@ -118,6 +144,6 @@ const Form = styled.form`
       background-color: #52D89F;
     }
   }
-  `;
+`;
 
 export default Main;
