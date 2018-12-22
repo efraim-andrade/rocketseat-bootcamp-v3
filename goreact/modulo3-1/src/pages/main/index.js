@@ -3,19 +3,23 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as FavoritesActions from '../../store/actions/favorites';
+import { Creators as FavoritesActions } from '../../store/ducks/favorites';
 
 class Main extends React.Component {
   static propTypes = {
     addFavoriteRequest: PropTypes.func.isRequired,
-    favorites: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        name: PropTypes.string,
-        description: PropTypes.string,
-        url: PropTypes.string,
-      }),
-    ).isRequired,
+    favorites: PropTypes.shape({
+      loading: PropTypes.bool,
+      error: PropTypes.oneOfType([null, PropTypes.string]),
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          name: PropTypes.string,
+          description: PropTypes.string,
+          url: PropTypes.string,
+        }),
+      ),
+    }).isRequired,
   }
 
   state = {
@@ -26,6 +30,8 @@ class Main extends React.Component {
     e.preventDefault();
 
     this.props.addFavoriteRequest(this.state.repositoryInput);
+
+    this.setState({ repositoryInput: '' });
   }
 
   render() {
@@ -39,10 +45,18 @@ class Main extends React.Component {
           />
 
           <button type="submit">Adicionar</button>
+
+          { this.props.favorites.loading && <span>carregando...</span> }
+
+          { !!this.props.favorites.error && (
+            <span>
+              {this.props.favorites.error}
+            </span>
+          )}
         </form>
 
         <ul>
-          { this.props.favorites.map(favorite => (
+          { this.props.favorites.data.map(favorite => (
             <li key={favorite.id}>
               <p>
                 <strong>{favorite.name}</strong> ({favorite.description})
