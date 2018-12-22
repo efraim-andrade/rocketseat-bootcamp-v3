@@ -7,7 +7,7 @@ import * as FavoritesActions from '../../store/actions/favorites';
 
 class Main extends React.Component {
   static propTypes = {
-    addFavorite: PropTypes.func.isRequired,
+    addFavoriteRequest: PropTypes.func.isRequired,
     favorites: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
@@ -25,7 +25,7 @@ class Main extends React.Component {
   handleAddRepository = (e) => {
     e.preventDefault();
 
-    this.props.addFavorite();
+    this.props.addFavoriteRequest(this.state.repositoryInput);
   }
 
   render() {
@@ -35,7 +35,7 @@ class Main extends React.Component {
           <input
             placeholder="usuário/repositório"
             value={this.state.repositoryInput}
-            onChance={e => this.setState({ repositoryInput: e.target.vue })}
+            onChange={e => this.setState({ repositoryInput: e.target.value })}
           />
 
           <button type="submit">Adicionar</button>
