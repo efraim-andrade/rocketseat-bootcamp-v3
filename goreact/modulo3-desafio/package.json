@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "eslint-config-airbnb": "^17.1.0",
+    "font-awesome": "^4.7.0",
     "mapbox-gl": "^0.52.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
