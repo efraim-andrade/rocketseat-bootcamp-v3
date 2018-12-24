@@ -30,6 +30,8 @@ const Container = styled.div`
 
   padding: 10px 0;
   border-bottom: 1px solid #F5F5F5;
+
+  &:first-of-type { padding-top: 0; }
   `;
 
 const Info = styled.div`
@@ -51,6 +53,8 @@ const Info = styled.div`
     color: #333;
 
     span {
+      margin-top: 3px;
+
       color: #888;
       font-size: 12px;
       font-weight: normal;
@@ -87,6 +91,6 @@ const Actions = styled.div`
     font-size: 18px;
     background: transparent;
   }
-`;
+  `;
 
 export default User;
