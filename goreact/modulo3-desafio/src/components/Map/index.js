@@ -1,10 +1,22 @@
 import React from 'react';
-import styled from 'styled-components';
-import MapGL, { Marker } from 'react-map-gl';
+import PropTypes from 'prop-types';
+import MapGL from 'react-map-gl';
+import { connect } from 'react-redux';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+import Modal from '../Modal';
+
 class Map extends React.Component {
+  static propTypes = {
+    users: PropTypes.arrayOf(PropTypes.shape({
+      data: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        avatar: PropTypes.string.isRequired,
+      })).isRequired,
+    })).isRequired,
+  }
+
   state = {
     viewport: {
       width: window.innerWidth,
@@ -13,6 +25,13 @@ class Map extends React.Component {
       longitude: -46.6065452,
       zoom: 14,
     },
+
+    markers: [],
+
+    showModal: false,
+
+    clickLatitude: '',
+    clickLongitude: '',
   }
 
   componentDidMount() {
@@ -34,41 +53,56 @@ class Map extends React.Component {
     });
   }
 
-  handleMapClick(e) {
-    const [latitude, longitude] = e.lngLat;
+  handleMapClick = (e) => {
+    const [longitude, latitude] = e.lngLat;
 
-    alert(`Latitude: ${latitude} \nLongitude: ${longitude}`);
+    this.setState({
+      ...this.state,
+      clickLatitude: latitude,
+      clickLongitude: longitude,
+    });
+
+    this.openModal();
+  }
+
+  openModal = () => {
+    this.setState({
+      ...this.state,
+      showModal: true,
+    });
+  }
+
+  closeModal = () => {
+    this.setState({
+      ...this.state,
+      showModal: false,
+    });
   }
 
   render() {
     return (
-      <MapGL
-        {...this.state.viewport}
-        onClick={this.handleMapClick}
-        mapStyle="mapbox://styles/mapbox/basic-v9"
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOXACCESSTOKEN}
-        onViewportChange={viewport => this.setState({ viewport })}
-      >
-        <Marker
-          latitude={-23.5439948}
-          longitude={-46.6065452}
+      <React.Fragment>
+        <Modal
+          show={this.state.showModal}
+          closeModal={this.closeModal}
+          latitude={this.state.clickLatitude}
+          longitude={this.state.clickLongitude}
+        />
+
+        <MapGL
+          {...this.state.viewport}
           onClick={this.handleMapClick}
-          captureClick
-        >
-          <Avatar
-            src="https://avatars2.githubusercontent.com/u/2254731?v=4"
-            alt="avatar"
-          />
-        </Marker>
-      </MapGL>
+          mapStyle="mapbox://styles/mapbox/basic-v9"
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOXACCESSTOKEN}
+          onViewportChange={viewport => this.setState({ viewport })}
+        />
+      </React.Fragment>
     );
   }
 }
 
-const Avatar = styled.img`
-  border-radius: 100%;
-  width: 48px;
-  height: 48px;
-`;
+const mapStateToProps = state => ({
+  users: state.users,
+});
 
-export default Map;
+export default connect(mapStateToProps)(Map);

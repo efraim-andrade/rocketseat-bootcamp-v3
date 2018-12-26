@@ -1,91 +1,71 @@
 import React from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-const Modal = () => (
-  <Container>
-    <Card>
-      <h2>Adicionar novo usuario</h2>
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as UsersActions } from '../../store/ducks/users';
 
-      <form>
-        <input type="text" placeholder="Usuario no Github" />
+import { Container, Card } from './style';
 
-        <div className="actions">
-          <button type="button">Cancelar</button>
-          <button
-            className="-primary"
-            type="submit"
-          >
-            Salvar
-          </button>
-        </div>
-      </form>
-    </Card>
-  </Container>
-);
-
-const Container = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 2;
-  transform: translate(-50%, -50%);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-
-  background-color: rgba(0, 0, 0, .5);
-`;
-
-const Card = styled.div`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 20px;
-  border-radius: 3px;
-
-  background-color: #FFF;
-
-  h2 {
-    margin-bottom: 10px;
-
-    color: #333;
-    font-size: 14px;
-    font-weight: bold;
+class Modal extends React.Component {
+  static propTypes = {
+    show: PropTypes.bool.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
   }
 
-  form {
-    input {
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      border-radius: 3px;
-      border: 1px solid #e9e9e9;
-
-      color: #999;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: space-between;
-
-      button {
-        padding: 10px 30px;
-        border: none;
-        border-radius: 3px;
-
-        color: #FFF;
-        font-size: 12px;
-        font-weight: bold;
-        background-color: #E9E9E9;
-        cursor: pointer;
-
-        &.-primary { background-color: #be9}
-      }
-    }
+  state = {
+    userInput: '',
+    latitude: this.props.latitude,
+    longitude: this.props.longitude,
   }
-`;
 
-export default Modal;
+  handleAddUser = (e) => {
+    e.preventDefault();
+  }
+
+  render() {
+    const {
+      show, closeModal,
+    } = this.props;
+
+    return (
+      <Container show={show}>
+        <Card>
+          <h2>Adicionar novo usuario</h2>
+
+          <form onSubmit={this.handleAddUser}>
+            <input
+              type="text"
+              name="user"
+              value={this.state.userInput}
+              onChange={e => this.setState({ userInput: e.target.value })}
+              placeholder="Usuario no Github"
+            />
+
+            <div className="actions">
+              <button
+                type="button"
+                onClick={closeModal}
+              >Cancelar
+              </button>
+
+              <button
+                className="-primary"
+                type="submit"
+              >
+                  Salvar
+              </button>
+            </div>
+          </form>
+        </Card>
+      </Container>
+    );
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(UsersActions, dispatch);
+
+
+export default connect(mapDispatchToProps)(Modal);

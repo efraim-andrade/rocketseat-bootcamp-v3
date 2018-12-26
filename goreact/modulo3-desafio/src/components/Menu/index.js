@@ -1,31 +1,35 @@
 import React from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { Container } from './style';
 
 import User from './User';
 
-const Menu = () => (
+const Menu = ({ users }) => (
   <Container>
-    <User />
-    <User />
-    <User />
-    <User />
+    {
+      users.data.map(user => (
+        <User
+          avatar={user.avatar}
+          name={user.name}
+          user={user.user}
+        />
+      ))
+    }
   </Container>
 );
 
+Menu.propTypes = {
+  users: PropTypes.arrayOf(PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    user: PropTypes.string.isRequired,
+  })).isRequired,
+};
 
-const Container = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 2;
+const mapStateToProps = state => ({
+  users: state.users,
+});
 
-  width: 300px;
-  height: 95vh;
-  padding: 14px;
-  border-radius: 3px;
-  box-shadow: 0 0 10px #CCC;
-
-  background-color: #FFF;
-  `;
-
-export default Menu;
+export default connect(mapStateToProps)(Menu);
