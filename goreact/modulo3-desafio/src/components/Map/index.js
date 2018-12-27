@@ -88,6 +88,7 @@ class Map extends React.Component {
           closeModal={this.closeModal}
           latitude={this.state.clickLatitude}
           longitude={this.state.clickLongitude}
+          toast={this.props.triggerToast}
         />
 
         <MapGL

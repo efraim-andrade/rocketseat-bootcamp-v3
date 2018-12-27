@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,29 +13,43 @@ class Modal extends React.Component {
   static propTypes = {
     show: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
-    latitude: PropTypes.string.isRequired,
-    longitude: PropTypes.string.isRequired,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
     addUsersRequest: PropTypes.func.isRequired,
+    users: PropTypes.shape({
+      error: PropTypes.oneOfType([null, PropTypes.string]),
+    }).isRequired,
   }
 
   state = {
     userInput: '',
   }
 
-  componentDidMount() {
-
-  }
-
-  handleAddUser = (e) => {
+  handleAddUser = async (e) => {
     e.preventDefault();
 
-    this.props.addUsersRequest(
-      this.state.userInput,
-      this.props.latitude,
-      this.props.longitude,
-    );
+    if (this.state.userInput === '') {
+      alert('Insira um nome');
+    } else {
+      await this.props.addUsersRequest(
+        this.state.userInput,
+        this.props.latitude,
+        this.props.longitude,
+      );
 
-    this.props.closeModal();
+      setTimeout(() => { this.triggerToast(); }, 1000);
+      this.props.closeModal();
+    }
+  }
+
+  triggerToast = () => {
+    const { error } = this.props.users;
+
+    if (error !== null) {
+      return !toast.isActive() && toast.error(error);
+    }
+
+    return !toast.isActive() && toast.success('Adicionado com sucesso');
   }
 
   render() {
@@ -42,36 +58,40 @@ class Modal extends React.Component {
     } = this.props;
 
     return (
-      <Container show={show}>
-        <Card>
-          <h2>Adicionar novo usuario</h2>
+      <React.Fragment>
+        <ToastContainer />
 
-          <form onSubmit={this.handleAddUser}>
-            <input
-              type="text"
-              name="user"
-              value={this.state.userInput}
-              onChange={e => this.setState({ userInput: e.target.value })}
-              placeholder="Usuario no Github"
-            />
+        <Container show={show}>
+          <Card>
+            <h2>Adicionar novo usuario</h2>
 
-            <div className="actions">
-              <button
-                type="button"
-                onClick={closeModal}
-              >Cancelar
-              </button>
+            <form onSubmit={this.handleAddUser}>
+              <input
+                type="text"
+                name="user"
+                value={this.state.userInput}
+                onChange={e => this.setState({ userInput: e.target.value })}
+                placeholder="Usuario no Github"
+              />
 
-              <button
-                className="-primary"
-                type="submit"
-              >
+              <div className="actions">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                >Cancelar
+                </button>
+
+                <button
+                  className="-primary"
+                  type="submit"
+                >
                   Salvar
-              </button>
-            </div>
-          </form>
-        </Card>
-      </Container>
+                </button>
+              </div>
+            </form>
+          </Card>
+        </Container>
+      </React.Fragment>
     );
   }
 }

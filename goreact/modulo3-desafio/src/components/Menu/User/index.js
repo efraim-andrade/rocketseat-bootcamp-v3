@@ -1,34 +1,63 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as UserCreators } from '../../../store/ducks/users';
+
 import { Container, Info, Actions } from './style';
 
-const User = ({ avatar, name, user }) => (
-  <Container>
-    <Info>
-      <img
-        src={avatar}
-        alt="avatar"
-      />
+class User extends React.Component {
+  static propTypes = {
+    id: PropTypes.number.isRequired,
+    avatar: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    user: PropTypes.string.isRequired,
+    removeUser: PropTypes.func.isRequired,
+  }
 
-      <p>
-        {name}
-        <span>{user}</span>
-      </p>
-    </Info>
+  state = {}
 
-    <Actions>
-      <button className="close fa fa-times" />
+  removeUser = (userID) => {
+    this.props.removeUser(userID);
+  }
 
-      <button className="search fa fa-angle-right" />
-    </Actions>
-  </Container>
-);
+  render() {
+    const {
+      id, avatar, name, user,
+    } = this.props;
 
-User.propTypes = {
-  avatar: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  user: PropTypes.string.isRequired,
-};
+    return (
+      <Container>
+        <Info>
+          <img
+            src={avatar}
+            alt="avatar"
+          />
 
-export default User;
+          <p>
+            {name}
+            <span>{user}</span>
+          </p>
+        </Info>
+
+        <Actions>
+          <button
+            className="close fa fa-times"
+            onClick={() => this.removeUser(id)}
+          />
+
+          <button className="search fa fa-angle-right" />
+        </Actions>
+      </Container>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  users: state.users,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(UserCreators, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(User);
