@@ -1,6 +1,3 @@
-import React from 'react';
-import Marker from '../../components/Map/Marker';
-
 /**
  * Types
  */
@@ -49,6 +46,8 @@ const INITIAL_STATE = {
       avatar: 'https://avatars0.githubusercontent.com/u/28229600?v=4',
       name: 'Efraim Andrade',
       user: 'efraim-andrade',
+      latitude: -23.5439948,
+      longitude: -46.6065452,
     },
   ],
   error: null,
@@ -67,7 +66,6 @@ export default function users(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         error: null,
-        marker: <Marker avatar={action.payload.data} />,
         data: [
           ...state.data,
           action.payload.data,

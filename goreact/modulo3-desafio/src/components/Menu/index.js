@@ -11,6 +11,7 @@ const Menu = ({ users }) => (
     {
       users.data.map(user => (
         <User
+          key={user.id}
           avatar={user.avatar}
           name={user.name}
           user={user.user}
@@ -21,11 +22,13 @@ const Menu = ({ users }) => (
 );
 
 Menu.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.shape({
-    avatar: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    user: PropTypes.string.isRequired,
-  })).isRequired,
+  users: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({
+      avatar: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      user: PropTypes.string.isRequired,
+    })).isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({

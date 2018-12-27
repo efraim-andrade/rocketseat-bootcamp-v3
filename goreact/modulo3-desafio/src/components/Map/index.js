@@ -6,15 +6,16 @@ import { connect } from 'react-redux';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import Modal from '../Modal';
+import Marker from './Marker';
 
 class Map extends React.Component {
   static propTypes = {
-    users: PropTypes.arrayOf(PropTypes.shape({
+    users: PropTypes.shape({
       data: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         avatar: PropTypes.string.isRequired,
       })).isRequired,
-    })).isRequired,
+    }).isRequired,
   }
 
   state = {
@@ -95,7 +96,16 @@ class Map extends React.Component {
           mapStyle="mapbox://styles/mapbox/basic-v9"
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOXACCESSTOKEN}
           onViewportChange={viewport => this.setState({ viewport })}
-        />
+        >
+          { this.props.users.data && this.props.users.data.map(user => (
+            <Marker
+              key={user.id}
+              avatar={user.avatar}
+              latitude={user.latitude}
+              longitude={user.longitude}
+            />
+          ))}
+        </MapGL>
       </React.Fragment>
     );
   }

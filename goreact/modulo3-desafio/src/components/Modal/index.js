@@ -11,18 +11,29 @@ class Modal extends React.Component {
   static propTypes = {
     show: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
+    latitude: PropTypes.string.isRequired,
+    longitude: PropTypes.string.isRequired,
+    addUsersRequest: PropTypes.func.isRequired,
   }
 
   state = {
     userInput: '',
-    latitude: this.props.latitude,
-    longitude: this.props.longitude,
+  }
+
+  componentDidMount() {
+
   }
 
   handleAddUser = (e) => {
     e.preventDefault();
+
+    this.props.addUsersRequest(
+      this.state.userInput,
+      this.props.latitude,
+      this.props.longitude,
+    );
+
+    this.props.closeModal();
   }
 
   render() {
@@ -65,7 +76,11 @@ class Modal extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  users: state.users,
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators(UsersActions, dispatch);
 
 
-export default connect(mapDispatchToProps)(Modal);
+export default connect(mapStateToProps, mapDispatchToProps)(Modal);
