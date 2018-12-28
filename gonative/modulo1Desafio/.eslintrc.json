@@ -1,0 +1,53 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["airbnb", "plugin:react-native/all"],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "plugins": [
+    "react-native",
+    "jsx-a11y",
+    "import"
+  ],
+  "env": {
+    "jest": true
+  },
+  "globals": {
+    "__DEV__": true
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-plugin-root-import": {}
+    }
+  },
+  "rules": {
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "global-require": "off",
+    "import/prefer-default-export": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "no-unused-expressions": ["error", {"allowTaggedTemplates": true }],
+    "react/jsx-one-expression-per-line": "off",
+    "class-methods-use-this": "off",
+    "react/destructuring-assignment": "off",
+    "react/no-access-state-in-setstate": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "react/button-has-type": "off",
+    "no-use-before-define": "off"
+  }
+}
