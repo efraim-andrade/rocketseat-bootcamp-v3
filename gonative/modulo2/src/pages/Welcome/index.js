@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   View, Text, TextInput, TouchableOpacity, StatusBar, AsyncStorage, ActivityIndicator,
@@ -8,6 +9,12 @@ import api from '~/services/api';
 import styles from './styles';
 
 class Welcome extends React.Component {
+  static propTypes ={
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+  }
+
   state = {
     username: '',
     loading: false,
@@ -34,7 +41,7 @@ class Welcome extends React.Component {
       await this.checkUserExists(username);
       await this.saveUser(username);
 
-      navigation.navigate('Repositories');
+      navigation.navigate('User');
     } catch (err) {
       this.setState({ loading: false, error: true });
 

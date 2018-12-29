@@ -1,26 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withNavigation } from 'react-navigation';
 
 import {
-  View, Text, TouchableOpacity, StatusBar,
+  View, Text, TouchableOpacity, StatusBar, AsyncStorage,
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 
-const Header = ({ title }) => (
-  <View style={styles.container}>
-    <StatusBar backgroundColor="#333" />
+class Header extends React.Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+  };
 
-    <View style={styles.left} />
+  state = {}
 
-    <Text style={styles.title}>{title}</Text>
+  signOut = async () => {
+    const { navigation } = this.props;
 
-    <TouchableOpacity onPress={() => {}} />
-  </View>
-);
+    await AsyncStorage.clear();
 
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-};
+    navigation.navigate('Welcome');
+  }
 
-export default Header;
+  render() {
+    const { title } = this.props;
+
+    return (
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#333" />
+
+        <View style={styles.left} />
+
+        <Text style={styles.title}>{title}</Text>
+
+        <TouchableOpacity onPress={this.signOut}>
+          <Icon name="exchange" size={16} style={styles.icon} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
+export default withNavigation(Header);
