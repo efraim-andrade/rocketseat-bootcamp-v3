@@ -47,7 +47,7 @@ class Welcome extends React.Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#333" />
+        <StatusBar backgroundColor="#333" translucent />
 
         <Text style={styles.title}>Bem Vindo</Text>
 
