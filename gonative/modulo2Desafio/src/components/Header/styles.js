@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
+    width: metrics.screenWidth,
+    marginLeft: -metrics.basePadding,
+
+    backgroundColor: colors.white,
   },
 
   back: {
