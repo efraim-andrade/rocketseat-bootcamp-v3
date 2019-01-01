@@ -16,13 +16,16 @@ class CardItem extends React.Component {
     avatar: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
+    link: PropTypes.string,
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
+      getParam: PropTypes.func,
     }).isRequired,
   };
 
   static defaultProps = {
     internal: false,
+    link: '',
   }
 
   state = {}
@@ -31,27 +34,31 @@ class CardItem extends React.Component {
     const { navigation, internal } = this.props;
 
     if (internal) {
-      return navigation.navigate('Issues');
+      return navigation.navigate('Issues', {
+        id: this.props.id,
+      });
     }
 
     return Linking.openURL(link);
   }
 
   render() {
-    const { avatar, name, author } = this.props;
+    const {
+      avatar, name, author, link,
+    } = this.props;
 
     return (
       <View style={styles.container}>
         <Image style={styles.avatar} source={{ uri: avatar }} />
 
         <View style={styles.info}>
-          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.title} numberOfLines={1}>{name}</Text>
           <Text style={styles.author}>{author}</Text>
         </View>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => this.goIssues()}
+          onPress={() => this.goIssues(link)}
         >
           <Icon name="chevron-right" />
         </TouchableOpacity>

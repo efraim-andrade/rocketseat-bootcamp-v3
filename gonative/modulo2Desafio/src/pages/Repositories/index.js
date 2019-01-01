@@ -2,7 +2,7 @@ import React from 'react';
 import api from '~/services/api';
 
 import {
-  View, TextInput, TouchableOpacity, FlatList, ActivityIndicator, AsyncStorage,
+  View, TextInput, TouchableOpacity, FlatList, ActivityIndicator, AsyncStorage, Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -15,45 +15,67 @@ class Repositories extends React.Component {
   state = {
     repoInput: '',
     data: [],
-    refreshing: false,
+    refreshing: true,
     loading: false,
+    error: false,
+  }
+
+  componentDidMount() {
+    this.loadRepos();
+  }
+
+  loadRepos = async () => {
+    this.setState({ refreshing: true });
+
+    const repos = await AsyncStorage.getItem('@Githuber:repos');
+
+    this.setState({
+      data: JSON.parse(repos),
+      refreshing: false,
+      loading: false,
+    });
   }
 
   searchRepo = async () => {
     this.setState({ refreshing: true });
 
-    const { repoInput } = this.state;
+    try {
+      const { repoInput } = this.state;
 
-    const { data } = await api.get(`/repos/${repoInput}`);
+      const { data } = await api.get(`/repos/${repoInput}`);
 
-    const storage = await AsyncStorage.getItem('@Repositories:itemz');
+      const repos = await AsyncStorage.getItem('@Githuber:repos');
 
-    const item = {
-      id: data.id,
-      name: data.name,
-      organization: data.organization.login,
-      avatar: data.organization.avatar_url,
-    };
+      const repoStorage = repos === null ? [] : JSON.parse(repos);
 
-    const newStorage = JSON.parse(storage);
+      const newRepo = {
+        id: data.id,
+        name: data.name,
+        organization: data.organization.login,
+        avatar: data.organization.avatar_url,
+      };
 
-    const asyncStorageItems = newStorage.push(item);
+      repoStorage.push(newRepo);
 
-    console.tron.log(asyncStorageItems);
+      await AsyncStorage.setItem('@Githuber:repos', JSON.stringify(repoStorage));
 
-    AsyncStorage.setItem('@Repositories:itemz', JSON.stringify(asyncStorageItems));
-
-    this.setState({
-      data: [data], repoInput: '', refreshing: false, loading: false,
-    });
+      this.setState({ data: repoStorage, error: false });
+    } catch (error) {
+      this.setState({ error: true });
+    } finally {
+      this.setState({
+        repoInput: '', refreshing: false, loading: false,
+      });
+    }
   }
 
   renderItems = ({ item }) => (
     <CardItem
       internal
-      avatar={item.organization.avatar_url}
+      id={item.id}
+      avatar={item.avatar}
       name={item.name}
-      author={item.organization.login}
+      author={item.organization}
     />
   )
 
@@ -65,18 +87,20 @@ class Repositories extends React.Component {
         data={data}
         keyExtractor={item => String(item.id)}
         renderItem={this.renderItems}
-        onRefresh={this.searchRepo}
+        onRefresh={this.loadRepos}
         refreshing={refreshing}
       />
     );
   }
 
   render() {
-    const { repoInput, loading } = this.state;
+    const { repoInput, loading, error } = this.state;
 
     return (
       <View style={styles.container}>
         <Header title="Repositories" />
+
+        { error && <Text style={styles.error}>Erro ao buscar repositorio</Text> }
 
         <View style={styles.form}>
           <TextInput

@@ -10,6 +10,8 @@ const styles = StyleSheet.create({
   },
 
   form: {
+    position: 'relative',
+
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
@@ -37,6 +39,11 @@ const styles = StyleSheet.create({
 
   icon: {
     color: colors.darker,
+  },
+
+  error: {
+    textAlign: 'center',
+    color: colors.danger,
   },
 });
 

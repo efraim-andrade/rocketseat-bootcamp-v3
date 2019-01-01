@@ -36,6 +36,10 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: colors.regular,
   },
+
+  button: {
+    marginLeft: metrics.baseMargin,
+  },
 });
 
 export default styles;
