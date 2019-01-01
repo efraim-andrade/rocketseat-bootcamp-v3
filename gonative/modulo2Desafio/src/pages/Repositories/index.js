@@ -1,7 +1,8 @@
 import React from 'react';
+import api from '~/services/api';
 
 import {
-  View, TextInput, TouchableOpacity,
+  View, TextInput, TouchableOpacity, FlatList, ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -13,36 +14,68 @@ import styles from './styles';
 class Repositories extends React.Component {
   state = {
     repoInput: '',
+    data: [],
+    refreshing: false,
+    loading: false,
+  }
+
+  searchRepo = async () => {
+    this.setState({ refreshing: true });
+
+    const { repoInput } = this.state;
+
+    const { data } = await api.get(`/repos/${repoInput}`);
+
+    this.setState({
+      data: [data], repoInput: '', refreshing: false, loading: false,
+    });
+  }
+
+  renderItems = ({ item }) => <CardItem internal repo={item} />
+
+  renderListItems = () => {
+    const { data, refreshing } = this.state;
+
+    return (
+      <FlatList
+        data={data}
+        keyExtractor={item => String(item.id)}
+        renderItem={this.renderItems}
+        onRefresh={this.searchRepo}
+        refreshing={refreshing}
+      />
+    );
   }
 
   render() {
-    const { repoInput } = this.state;
+    const { repoInput, loading } = this.state;
 
     return (
       <View style={styles.container}>
-        <Header title="GitIssues" />
+        <Header title="Repositories" />
 
         <View style={styles.form}>
           <TextInput
             style={styles.input}
             autoCapitalize="none"
             autoCorrect={false}
-            placeholder="Adicionar novo repositorio"
+            placeholder="organizacao/repositorio"
             underlineColorAndroid="transparent"
             value={repoInput}
             onChangeText={text => this.setState({ repoInput: text })}
           />
 
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={this.searchRepo}>
             <Icon style={styles.icon} name="plus" />
           </TouchableOpacity>
         </View>
 
-        <CardItem
-          title="rocketnative"
-          author="RocketSeat"
-          avatar="https://avatars1.githubusercontent.com/u/28229600?s=460&v=4"
-        />
+        {
+          loading
+            ? <ActivityIndicator />
+            : this.renderListItems()
+        }
+
       </View>
     );
   }

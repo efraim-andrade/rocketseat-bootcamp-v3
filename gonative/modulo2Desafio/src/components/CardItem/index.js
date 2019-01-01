@@ -1,33 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withNavigation } from 'react-navigation';
 
 import {
-  View, Text, Image, TouchableOpacity,
+  View, Text, Image, TouchableOpacity, Linking,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 
-const CardItem = ({ title, author, avatar }) => (
-  <View style={styles.container}>
-    <Image style={styles.avatar} source={{ uri: avatar }} />
+class CardItem extends React.Component {
+  static propTypes = {
+    internal: PropTypes.bool,
+    repo: PropTypes.shape({
+      name: PropTypes.string,
+      owner: PropTypes.shape({
+        login: PropTypes.string,
+        avatar_url: PropTypes.string,
+      }),
+    }).isRequired,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+  };
 
-    <View style={styles.info}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.author}>{author}</Text>
-    </View>
+  static defaultProps = {
+    internal: false,
+  }
 
-    <TouchableOpacity style={styles.button} onPress={() => {}}>
-      <Icon name="chevron-right" />
-    </TouchableOpacity>
-  </View>
-);
+  state = {}
 
-CardItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  avatar: PropTypes.string.isRequired,
-};
+  goIssues = (link = '') => {
+    const { navigation, internal } = this.props;
 
-export default CardItem;
+    if (internal) {
+      return navigation.navigate('Issues');
+    }
+
+    return Linking.openURL(link);
+  }
+
+  render() {
+    const { repo } = this.props;
+
+    return (
+      <View style={styles.container}>
+        <Image style={styles.avatar} source={{ uri: repo.owner.avatar_url }} />
+
+        <View style={styles.info}>
+          <Text style={styles.title}>{repo.name}</Text>
+          <Text style={styles.author}>{repo.owner.login}</Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.goIssues()}
+        >
+          <Icon name="chevron-right" />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
+export default withNavigation(CardItem);
