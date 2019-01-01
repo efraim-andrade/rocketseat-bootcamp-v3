@@ -13,13 +13,9 @@ import styles from './styles';
 class CardItem extends React.Component {
   static propTypes = {
     internal: PropTypes.bool,
-    repo: PropTypes.shape({
-      name: PropTypes.string,
-      owner: PropTypes.shape({
-        login: PropTypes.string,
-        avatar_url: PropTypes.string,
-      }),
-    }).isRequired,
+    avatar: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func,
     }).isRequired,
@@ -42,15 +38,15 @@ class CardItem extends React.Component {
   }
 
   render() {
-    const { repo } = this.props;
+    const { avatar, name, author } = this.props;
 
     return (
       <View style={styles.container}>
-        <Image style={styles.avatar} source={{ uri: repo.owner.avatar_url }} />
+        <Image style={styles.avatar} source={{ uri: avatar }} />
 
         <View style={styles.info}>
-          <Text style={styles.title}>{repo.name}</Text>
-          <Text style={styles.author}>{repo.owner.login}</Text>
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.author}>{author}</Text>
         </View>
 
         <TouchableOpacity
