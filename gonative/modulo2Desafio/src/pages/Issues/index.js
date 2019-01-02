@@ -26,8 +26,12 @@ class Issues extends Component {
       refreshing: false,
     }
 
-    componentDidMount() {
-      this.loadIssues();
+    async componentDidMount() {
+      await this.loadIssues();
+
+      this.setState({
+        dataAll: this.state.data,
+      });
     }
 
     loadIssues = async () => {
@@ -37,6 +41,27 @@ class Issues extends Component {
 
       this.setState({ data, loading: false });
     }
+
+    filterList = (type = 'all') => {
+      if (type === 'all') {
+        this.setState({
+          data: this.state.dataAll,
+        });
+      }
+
+      if (type === 'open') {
+        this.setState({
+          data: this.state.dataAll.filter(item => item.state === 'open'),
+        });
+      }
+
+      if (type === 'closed') {
+        this.setState({
+          data: this.state.dataAll.filter(item => item.state !== 'open'),
+        });
+      }
+    }
+
 
     renderItems = ({ item }) => (
       <CardItem
@@ -66,18 +91,18 @@ class Issues extends Component {
 
       return (
         <View style={styles.container}>
-          <Header title="Issues" />
+          <Header back title="Issues" />
 
           <View style={styles.filter}>
-            <TouchableOpacity style={styles.item}>
-              <Text style={styles.text}>Todas</Text>
+            <TouchableOpacity style={styles.item} onPress={() => this.filterList()}>
+              <Text style={[styles.text, styles.active]}>Todas</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} onPress={() => this.filterList('open')}>
               <Text style={styles.text}>Abertas</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} onPress={() => this.filterList('closed')}>
               <Text style={styles.text}>Fechadas</Text>
             </TouchableOpacity>
           </View>
