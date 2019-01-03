@@ -34,6 +34,14 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
 
+  error: {
+    marginBottom: 6,
+
+    fontWeight: 'bold',
+    color: colors.danger,
+    alignSelf: 'center',
+  },
+
   input: {
     height: 50,
     backgroundColor: colors.white,
@@ -55,6 +63,10 @@ const styles = StyleSheet.create({
     color: colors.darkTransparent,
     fontWeight: 'bold',
     fontSize: 14,
+  },
+
+  loading: {
+    color: colors.darkTransparent,
   },
 
   footer: {
