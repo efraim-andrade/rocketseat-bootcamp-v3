@@ -1,15 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 
-class Todo extends React.Component {
-    state = {}
+const Todo = ({ title }) => (
+  <View>
+    <Text>{ title }</Text>
+  </View>
+);
 
-    render() {
-      return (
-        <View />
-      );
-    }
-}
+Todo.defaultProps = {
+  title: 'Todo Padrao',
+};
+
+Todo.propTypes = {
+  title: PropTypes.string,
+};
 
 export default Todo;
