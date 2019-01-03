@@ -1,13 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
 import { Provider } from 'react-redux';
+
+import Routes from '~/routes';
 
 import '~/Config/Reactotron';
 import store from '~/store';
 
 const App = () => (
   <Provider store={store}>
-    <View />
+    <Routes />
   </Provider>
 );
 

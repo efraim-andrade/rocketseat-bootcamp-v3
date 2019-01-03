@@ -1,3 +1,5 @@
+import Color from 'color';
+
 export default {
   white: '#FFF',
   lighter: '#EEE',
@@ -7,8 +9,9 @@ export default {
   darker: '#333',
   black: '#000',
 
-  primary: '#7A91CA',
-  secondary: '#444A5A',
+  primary: '#6550B7',
+  primaryDark: Color('#6550B7').darken(0.1),
+  secondary: '#6ADC00',
   success: '#9DCA83',
   danger: '#E37A7A',
 
