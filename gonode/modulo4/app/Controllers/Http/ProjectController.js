@@ -3,13 +3,14 @@
 const Project = use('App/Models/Project')
 
 class ProjectController {
-  async index ({ request, response, view }) {
-    const projects = Project.query().with('user').fetch()
+  async index ({ request }) {
+    const { page } = request.get() // pega o query params page ex: ?page=2
+    const projects = Project.query().with('user').paginate(page)
 
     return projects
   }
 
-  async store ({ request, response, auth }) {
+  async store ({ request, auth }) {
     const data = request.only(['title', 'description'])
 
     const project = await Project.create({ ...data, user_id: auth.user.id })
