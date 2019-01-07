@@ -17,18 +17,15 @@ class UserController {
 
     const password = await request.only(['old_password', 'password'])
 
-    console.log(JSON.stringify(password) === '{}' ? 'true' : 'false')
-    console.log(password)
-
     if (!(JSON.stringify(password) === '{}')) {
       const isSame = await Hash.verify(password.old_password, user.password)
 
       if (!isSame) {
-        return response.status(401).send({ error: { message: 'senha atual errada' } })
+        return response.status(400).send({ error: { message: 'senha atual errada' } })
       }
     }
 
-    const data = await request.only(['email', 'password', 'username'])
+    const data = await request.only(['password', 'username'])
 
     user.merge(data)
     await user.save()

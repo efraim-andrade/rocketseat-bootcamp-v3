@@ -1,0 +1,5 @@
+<strong>Fala {{username}}, tudo certo?</strong>
+
+<p>
+  Você está sendo convidado para o evento: {{ title }} que irá ocorrer em: {{place}} as {{date}}
+</p>

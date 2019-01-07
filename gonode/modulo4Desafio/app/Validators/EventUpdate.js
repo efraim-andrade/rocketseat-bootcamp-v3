@@ -2,15 +2,14 @@
 
 const Antl = use('Antl')
 
-class UserUpdate {
+class EventUpdate {
   get validateAll () {
     return true
   }
 
   get rules () {
     return {
-      username: 'unique:users',
-      password: 'min:6|max:20|confirmed'
+      date: 'date'
     }
   }
 
@@ -19,4 +18,4 @@ class UserUpdate {
   }
 }
 
-module.exports = UserUpdate
+module.exports = EventUpdate
