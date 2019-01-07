@@ -10,7 +10,7 @@ class EventStore {
   get rules () {
     return {
       title: 'required',
-      date: 'date'
+      date: 'date|unique:events'
     }
   }
 

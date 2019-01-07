@@ -9,7 +9,7 @@ class EventUpdate {
 
   get rules () {
     return {
-      date: 'date'
+      date: 'date|unique:events'
     }
   }
 
