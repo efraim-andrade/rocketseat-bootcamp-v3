@@ -16,6 +16,7 @@ module.exports = async (req, res, next) => {
 
     req.userId = decoded.id
 
+    /** istanbul ignore next */
     return next()
   } catch (err) {
     return res.status(401).json({ error: 'Token invalido' })

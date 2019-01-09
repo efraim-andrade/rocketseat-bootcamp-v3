@@ -7,7 +7,7 @@ class SessionController {
     const user = await User.findOne({ email })
 
     if (!user) {
-      return res.status(404)
+      return res.status(400)
         .json({ error: 'Usuario invalido' })
     }
 

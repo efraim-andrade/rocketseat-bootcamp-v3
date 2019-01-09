@@ -25,7 +25,7 @@ routes.use(authMiddleware)
 routes.get('/ads/', handle(controllers.AdController.index))
 routes.get('/ads/:id', handle(controllers.AdController.show))
 routes.delete('/ads/:id', handle(controllers.AdController.destroy))
-routes.post('/ads/',
+routes.post('/ads',
   validate(validators.Ad),
   handle(controllers.AdController.store))
 routes.put('/ads/:id',
