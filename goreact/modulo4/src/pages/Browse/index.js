@@ -4,6 +4,8 @@ import {
   Container, Title, List, Playlist,
 } from './styles';
 
+console.tron.log('teste');
+
 const Browse = () => (
   <Container>
     <Title>Navegar</Title>
