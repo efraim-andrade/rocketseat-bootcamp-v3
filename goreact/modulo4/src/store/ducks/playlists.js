@@ -3,6 +3,23 @@ export const Types = {
   GET_SUCCESS: 'playlist/GET_SUCCESS',
 };
 
+/**
+ * Creators
+ */
+
+export const Creators = {
+  getPlaylistRequest: () => ({ type: Types.GET_REQUEST }),
+
+  getPlaylistSuccess: data => ({
+    type: Types.GET_SUCCESS,
+    payload: { data },
+  }),
+};
+
+/**
+ * Reducers
+ */
+
 const INITIAL_STATE = {
   data: [],
   loading: false,
@@ -20,12 +37,3 @@ export default function playlists(state = INITIAL_STATE, action) {
       return state;
   }
 }
-
-export const Creators = {
-  getPlaylistRequest: () => ({ type: Types.GET_REQUEST }),
-
-  getPlaylistSuccess: data => ({
-    type: Types.GET_SUCCESS,
-    payload: { data },
-  }),
-};
