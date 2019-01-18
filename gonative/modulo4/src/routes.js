@@ -22,6 +22,7 @@ const Routes = createStackNavigator({
       textAlign: 'center',
     },
     headerTintColor: colors.white,
+    headerBackTitle: null,
   },
 });
 
