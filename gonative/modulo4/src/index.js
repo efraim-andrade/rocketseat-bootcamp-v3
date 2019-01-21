@@ -6,9 +6,14 @@ import '~/config/Reactotron';
 import store from '~/store';
 import Routes from '~/routes';
 
+import Player from '~/components/Player';
+
 const App = () => (
   <Provider store={store}>
-    <Routes />
+    <React.Fragment>
+      <Routes />
+      <Player />
+    </React.Fragment>
   </Provider>
 );
 
