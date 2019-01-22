@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   View, StatusBar, TouchableOpacity, FlatList,
@@ -278,17 +279,23 @@ const albums = [
   },
 ];
 
-const main = () => (
+const main = ({ navigation }) => (
   <View style={styles.container}>
     <StatusBar barStyle="light-content" />
 
     <FlatList
       data={albums}
       keyExtractor={album => String(album.id)}
-      renderItem={({ item }) => <AlbumItem album={item} />}
+      renderItem={({ item }) => <AlbumItem onPress={() => navigation.navigate('Album', { album: item })} album={item} />}
     />
   </View>
 );
+
+main.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};
 
 main.navigationOptions = ({ navigation }) => ({
   title: 'Sua Biblioteca',
